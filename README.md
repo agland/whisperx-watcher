@@ -1,5 +1,3 @@
-Here’s a clean, complete `README.md` you can copy directly into your repo root:
-
 ---
 
 ```md
@@ -168,6 +166,3 @@ MIT.  Contributions welcome.
 ```
 
 ---
-
-This version is safe to publish. It includes no personal identifiers and clearly separates the public Systran model (auto-downloadable) from gated pyannote models (manual setup).
-```
