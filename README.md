@@ -4,7 +4,7 @@ Watches a folder for new audio and outputs `<name>.txt` and `<name>.srt`. Uses W
 
 ## Install
 ```bash
-git clone https://github.com/<your-username>/whisperx-watcher.git
+git clone https://github.com/agland/whisperx-watcher.git
 cd whisperx-watcher
 ./install.sh
 open ./run_watcher.command
