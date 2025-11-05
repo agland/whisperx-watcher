@@ -1,6 +1,3 @@
----
-
-```md
 # WhisperX Watcher  
 A lightweight macOS utility that automatically transcribes audio recordings dropped into a watched folder using [WhisperX](https://github.com/m-bain/whisperX).  
 It runs locally with optional speaker diarization support and saves `.txt` and `.srt` transcripts automatically.
