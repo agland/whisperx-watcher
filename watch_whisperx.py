@@ -5,11 +5,11 @@ from watchdog.observers.polling import PollingObserver as Observer
 import whisperx
 from whisperx.diarize import DiarizationPipeline
 
-# Paths
-RECORDINGS_DIR = Path("/Users/alex/Library/Mobile Documents/com~apple~CloudDocs/Recording")
-MODELS_ASR_DIR = Path("/Users/alex/Library/Application Support/noScribe/whisper_models/faster-en-med")
-MODELS_PYAN_DIR = Path("/Users/alex/transcriber/pyan_dir")
-LOG_PATH = Path("/Users/alex/whisperx-watcher/watcher.log")
+# Paths - EDIT IN ENV FILE
+RECORDINGS_DIR = Path("path/to/directory")
+MODELS_ASR_DIR = Path("path/to/directory")
+MODELS_PYAN_DIR = Path("path/to/directory")
+LOG_PATH = Path("path/to/directory")
 AUDIO_EXTS = {".m4a", ".wav", ".mp3", ".flac", ".ogg", ".aac"}
 
 # Offline/local caches for HF/pyannote
