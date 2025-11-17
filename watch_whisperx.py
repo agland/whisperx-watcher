@@ -9,10 +9,10 @@ from whisperx.diarize import DiarizationPipeline
 SCAN_SUBDIRS = os.getenv("SCAN_SUBDIRS", "false").lower() == "true"
 
 # Paths - EDIT IN ENV FILE
-RECORDINGS_DIR = Path("/Users/alex/Library/Mobile Documents/com~apple~CloudDocs/Recording")
-MODELS_ASR_DIR = Path("/Users/alex/Library/Application Support/noScribe/whisper_models/faster-en-med")
-MODELS_PYAN_DIR = Path("/Users/alex/transcriber/pyan_dir")
-LOG_PATH = Path("/Users/alex/whisperx-watcher/watcher.log")
+RECORDINGS_DIR = Path("INSERT PATH HERE")
+MODELS_ASR_DIR = Path("INSERT PATH HERE")
+MODELS_PYAN_DIR = Path("INSERT PATH HERE")
+LOG_PATH = Path("INSERT PATH HERE")
 AUDIO_EXTS = {".m4a", ".wav", ".mp3", ".flac", ".ogg", ".aac"}
 
 # Offline/local caches for HF/pyannote
@@ -34,6 +34,40 @@ def is_audio(p: Path) -> bool:
 
 def wait_for_stable(p: Path, interval=1.5, checks=3, timeout=600):
     logger.info(f"Waiting for file to stabilize: {p.name}")
+    start = time.time(); last = -1; stable = 0
+    while True:
+        size = p.stat().st_size
+        stable = stable + 1 if size == last else 0
+        if stable >= checks:
+            logger.info(f"File stabilized: {p.name}")
+            return
+        if time.time() - start > timeout:
+            raise TimeoutError(f"Timeout waiting for {p.name} to stabilize")
+        last = size
+        time.sleep(interval)
+
+def srt_timestamp(t: float) -> str:
+    t = max(0.0, float(t))
+    h = int(t // 3600)
+    m = int((t % 3600) // 60)
+    s = int(t % 60)
+    ms = int(round((t - math.floor(t)) * 1000))
+    return f"{h:02d}:{m:02d}:{s:02d},{ms:03d}"
+
+def write_srt(segments, path: Path):
+    with open(path, "w") as f:
+        for i, seg in enumerate(segments, 1):
+            start = srt_timestamp(seg["start"])
+            end = srt_timestamp(seg["end"])
+            text = seg["text"].strip()
+            spk = seg.get("speaker", "SPK0")
+            f.write(f"{i}\n{start} --> {end}\n[{spk}] {text}\n\n")
+
+def write_txt(segments, path: Path):
+    with open(path, "w") as f:
+        for seg in segments:
+            spk = seg.get("speaker", "SPK0")
+            f.write(f"[{spk} {seg['start']:.1f}-{seg['end']:.1f}] {seg['text'].strip()}\n")
     start = time.time(); last = -1; stable = 0
     while True:
         size = p.stat().st_size
